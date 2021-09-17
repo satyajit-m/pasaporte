@@ -20,7 +20,7 @@ router.post("/register", validInfo, async (req, res) => {
     ]);
 
     if (user.rows.length != 0) {
-      return res.status(401).send(" User Already Exists ");
+      return res.status(401).json(" User Already Exists ");
     }
     //3. Bcrypt user password
 
@@ -36,16 +36,14 @@ router.post("/register", validInfo, async (req, res) => {
       [name, email, bcryptPassword, type]
     );
 
-    //res.json(newUser.rows[0]);
-
     //5. Generate ouw JWT token
 
-    const token = jwtGenerator(newUser.rows[0].user_id);
+    const token = jwtGenerator(newUser.rows[0].user_id, newUser.rows[0].user_type);
 
     res.json({ token });
   } catch (err) {
     console.error(err.message);
-    res.status(500).send(" Server Timeout ");
+    res.status(500).json(" Server Timeout ");
   }
 });
 
@@ -64,7 +62,7 @@ router.post("/login", validInfo, async (req, res) => {
     ]);
 
     if (user.rows.length === 0) {
-      return res.status(401).send("User Doesnt Exists");
+      return res.status(401).json("User Doesnt Exists");
     }
 
     //3. check if incoming password is the same as db password
@@ -75,15 +73,15 @@ router.post("/login", validInfo, async (req, res) => {
     );
 
     if (!validPassword) {
-      return res.status(401).send(" Password is Incorrect ");
+      return res.status(401).json(" Password is Incorrect ");
     }
 
     //4. give them jwt token
-    const token = jwtGenerator(user.rows[0].user_id);
+    const token = jwtGenerator(user.rows[0].user_id, user.rows[0].user_type);
     res.json({ token });
   } catch (err) {
     console.error(err.message);
-    res.status(500).send(" Server Timeout ");
+    res.status(500).json(" Server Timeout ");
   }
 });
 
@@ -92,7 +90,7 @@ router.get("/is-verify", authorization, async (req, res) => {
     res.json(true);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send(" Server Timeout ");
+    res.status(500).json(" Server Timeout ");
   }
 });
 
