@@ -6,7 +6,7 @@ router.get("/verified", async (req, res) => {
 
   try {
     const getVerified = await pool.query(
-      "SELECT *FROM applications A INNER JOIN verifications B ON A.appl_id=B.appl_id WHERE B.police_ver=true"
+      "SELECT *FROM applications A INNER JOIN verifications B ON A.appl_id=B.appl_id WHERE B.police_ver='accepted'"
     );
 
     res.status(200).json({
@@ -25,7 +25,7 @@ router.get("/verified", async (req, res) => {
 router.get("/unverified", async (req, res) => {
   try {
     const getVerified = await pool.query(
-      "SELECT *FROM applications A INNER JOIN verifications B ON A.appl_id=B.appl_id WHERE B.police_ver=false"
+      "SELECT *FROM applications A INNER JOIN verifications B ON A.appl_id=B.appl_id WHERE B.police_ver='pending'"
     );
 
     res.status(200).json({

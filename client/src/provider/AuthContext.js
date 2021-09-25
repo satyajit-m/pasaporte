@@ -4,7 +4,8 @@ import jwt_decode from "jwt-decode";
 const AuthContext = React.createContext();
 const UpdateAuthContext = React.createContext();
 const RoleContext = React.createContext();
-const UserContext = React.createContext();
+const UpdateRoleContext = React.createContext();
+const UserIdContext = React.createContext();
 
 export function useAuth() {
   return useContext(AuthContext);
@@ -18,14 +19,22 @@ export function useRole() {
   return useContext(RoleContext);
 }
 
-export function useUser() {
-  return useContext(UserContext);
+export function useUpdateRole() {
+  return useContext(UpdateRoleContext);
+}
+
+export function useUserId() {
+  return useContext(UserIdContext);
 }
 export function AuthProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const setAuth = (bval) => {
     setIsAuthenticated(bval);
+  };
+
+  const setUserRole = (userRole) => {
+    setRole(userRole);
   };
 
   const [role, setRole] = useState("NONE");
@@ -48,16 +57,15 @@ export function AuthProvider({ children }) {
         });
 
         const parseRes = await response.json();
-        console.log(parseRes)
         if (parseRes === true) {
           setIsAuthenticated(true);
           var decoded = jwt_decode(localStorage.token);
-          setRole(decoded["type"]);
+          setUserRole(decoded["type"]);
           setUserId(decoded["user"]);
         } else {
           localStorage.clear();
           setIsAuthenticated(false);
-          setRole("Blank");
+          setRole("NONE");
         }
       }
     } catch (err) {
@@ -66,14 +74,18 @@ export function AuthProvider({ children }) {
   }
   useEffect(() => {
     isAuth();
-  }, []);
+  }, [userId]);
 
   return (
     <AuthContext.Provider value={isAuthenticated}>
       <UpdateAuthContext.Provider value={setAuth}>
-        <RoleContext.Provider value={role}>
-          <UserContext.Provider value={userId}>{children}</UserContext.Provider>{" "}
-        </RoleContext.Provider>
+        <UpdateRoleContext.Provider value={setUserRole}>
+          <RoleContext.Provider value={role}>
+            <UserIdContext.Provider value={userId}>
+              {children}
+            </UserIdContext.Provider>
+          </RoleContext.Provider>
+        </UpdateRoleContext.Provider>
       </UpdateAuthContext.Provider>
     </AuthContext.Provider>
   );

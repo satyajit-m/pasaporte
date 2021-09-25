@@ -1,10 +1,10 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { toast } from "react-toastify";
-import { useRole } from "../provider/AuthContext";
+import { useRole, useUpdateRole } from "../provider/AuthContext";
 
 const Dashboard = ({ setAuth }) => {
   const [name, setName] = useState("");
   const role = useRole();
+  const updateRole = useUpdateRole();
 
   async function getName() {
     try {
@@ -16,17 +16,11 @@ const Dashboard = ({ setAuth }) => {
       const parseRes = await response.json();
       console.log(parseRes.user_name);
       setName(parseRes.user_name);
+      updateRole(parseRes.user_type);
     } catch (err) {
       console.error(err.message);
     }
   }
-
-  const logOut = (e) => {
-    e.preventDefault();
-    localStorage.removeItem("token");
-    setAuth(false);
-    toast.success("Logout Success");
-  };
 
   useEffect(() => {
     getName();
@@ -34,12 +28,6 @@ const Dashboard = ({ setAuth }) => {
   return (
     <Fragment>
       <div>
-        <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          onClick={(e) => logOut(e)}
-        >
-          LogOut
-        </button>
         {name}
         &nbsp; Role - {role}
       </div>

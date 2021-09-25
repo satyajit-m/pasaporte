@@ -1,7 +1,20 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useAuth, useRole, useUpdateAuth } from "../provider/AuthContext";
 
 const Navbar = ({ toggle }) => {
+  const isAuthenticated = useAuth();
+  const role = useRole();
+  const setAuth = useUpdateAuth();
+
+  const logOut = (e) => {
+    e.preventDefault();
+    localStorage.removeItem("token");
+    setAuth(false);
+    toast.success("Logout Success");
+  };
+
   return (
     <nav
       className="flex justify-between items-center h-16 bg-white text-black relative shadow-sm font-medium"
@@ -26,14 +39,28 @@ const Navbar = ({ toggle }) => {
           />
         </svg>
       </div>
-      <div className="pr-8 md:block  hidden">
-        <Link to="/register" className="p-4">
-          Register
-        </Link>
-        <Link to="/login" className="p-4">
-          Login
-        </Link>
-      </div>
+      {!isAuthenticated ? (
+        <div className="pr-8 md:block  hidden">
+          <Link to="/register" className="p-4">
+            Register
+          </Link>
+          <Link to="/login" className="p-4">
+            Login
+          </Link>
+        </div>
+      ) : (
+        <div>
+          <Link to="/applicant" className="p-4">
+            Apply
+          </Link>
+          <button
+            className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded relative mr-8"
+            onClick={(e) => logOut(e)}
+          >
+            LogOut
+          </button>
+        </div>
+      )}
     </nav>
   );
 };

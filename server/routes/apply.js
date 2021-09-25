@@ -7,33 +7,33 @@ router.post("/", async (req, res) => {
 
     //destructure the application body
     const {
-      name,
+      fullName,
       dob,
       gender,
-      fname,
-      mname,
+      fatherName,
+      motherName,
       address,
-      dist,
+      district,
       state,
-      pin,
-      mobile,
+      pinCode,
+      mobileNumber,
       user_id,
     } = req.body;
 
     //insert values into table
     const newApplication = await pool.query(
-      "INSERT INTO applications (name, dob, gender, father_name, mother_name, address, district, state, pincode, mobile, user_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *",
+      "INSERT INTO applications (fullname, dob, gender, fathername, mothername, address, district, state, pincode, mobilenumber, user_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *",
       [
-        name,
+        fullName,
         dob,
         gender,
-        fname,
-        mname,
+        fatherName,
+        motherName,
         address,
-        dist,
+        district,
         state,
-        pin,
-        mobile,
+        pinCode,
+        mobileNumber,
         user_id,
       ]
     );
@@ -58,11 +58,15 @@ router.post("/check", async (req, res) => {
     const { userId } = req.body;
 
     const applied = await pool.query(
-      "SELECT *FROM applications WHERE user_id = $1",
+      "SELECT appl_id FROM applications WHERE user_id = $1",
       [userId]
     );
     if (applied.rows.length != 0) {
-      return res.json({ applied: true });
+      const verif = await pool.query(
+        "SELECT *FROM verifications WHERE appl_id = $1",
+        [applied.rows[0]["appl_id"]]
+      );
+      return res.json({ applied: true, verif: verif.rows[0] });
     } else {
       return res.json({ applied: false });
     }
