@@ -1,5 +1,6 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { useRole, useUpdateRole } from "../provider/AuthContext";
+import { Applicant, Police, Admin } from "../components";
 
 const Dashboard = ({ setAuth }) => {
   const [name, setName] = useState("");
@@ -27,10 +28,17 @@ const Dashboard = ({ setAuth }) => {
   }, []);
   return (
     <Fragment>
-      <div>
+      {role === "police" ? (
+        <Police />
+      ) : role === "applicant" ? (
+        <Applicant />
+      ) : (
+        <Admin />
+      )}
+      {/* <div>
         {name}
         &nbsp; Role - {role}
-      </div>
+      </div> */}
     </Fragment>
   );
 };

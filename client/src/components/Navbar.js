@@ -21,7 +21,7 @@ const Navbar = ({ toggle }) => {
       role="navigation"
     >
       <Link to="/" className="pl-8">
-        Pasaporte - Passport Management System
+        Pasaporte - Passport Automation System
       </Link>
       <div className="px-4 cursor-pointer md:hidden" onClick={toggle}>
         <svg
@@ -49,12 +49,10 @@ const Navbar = ({ toggle }) => {
           </Link>
         </div>
       ) : (
-        <div>
-          <Link to="/applicant" className="p-4">
-            Apply
-          </Link>
+        <div className="flex">
+          <div className="flex justify-center"> Hello: {role}</div>
           <button
-            className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded relative mr-8"
+            className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded relative mr-8 ml-8"
             onClick={(e) => logOut(e)}
           >
             LogOut

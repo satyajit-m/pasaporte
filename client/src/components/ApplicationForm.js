@@ -13,7 +13,7 @@ function ApplicationForm() {
     address: "",
     district: "",
     state: "",
-    pinCode: "000000",
+    pinCode: "",
     mobileNumber: "",
   });
 

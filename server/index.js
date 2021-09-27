@@ -1,9 +1,11 @@
+const bodyParser = require("body-parser");
 const express = require("express");
 const app = express();
 const cors = require("cors");
 
 //middleware
 app.use(express.json());
+app.use(bodyParser.json());
 app.use(cors());
 
 //Routes
@@ -19,9 +21,11 @@ app.use("/dashboard", require("./routes/dashboard"));
 app.use("/apply", require("./routes/apply"));
 
 //police
-app.use("/police",require("./routes/police"))
+app.use("/police", require("./routes/police"));
 
 //admin
+app.use("/admin", require("./routes/admin"));
+
 //app.use("/admin",require("./routes/admin"))
 
 app.listen(5000, () => {

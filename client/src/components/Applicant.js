@@ -10,10 +10,8 @@ function Applicant() {
 
   const [newApply, setNewApply] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [verifStatus, setVerifStatus] = useState({
-    policeVer: "",
-    adminVer: "",
-  });
+
+  const [resp, setResp] = useState({ applied: "", verif: "", appl: "" });
 
   async function isApplied() {
     try {
@@ -28,12 +26,8 @@ function Applicant() {
         const parseRes = await response.json();
         setLoading(false);
         if (parseRes["applied"]) {
+          setResp(parseRes);
           setNewApply(false);
-          setVerifStatus({
-            ...verifStatus,
-            policeVer: parseRes["verif"]["police_ver"],
-            adminVer: parseRes["verif"]["admin_ver"],
-          });
         } else {
           setNewApply(true);
         }
@@ -44,11 +38,11 @@ function Applicant() {
   }
   useEffect(() => {
     isApplied();
-  }, [userId]);
+  }, [userId, loading]);
   return loading ? (
     <div>Loading</div>
   ) : !newApply ? (
-    <AlreadyApplied verifStatus={verifStatus} />
+    <AlreadyApplied {...resp} />
   ) : (
     <Fragment>
       <div className="flex justify-center m-5 text-xl text-purple-700 font-bold">
