@@ -12,7 +12,7 @@ import { Navbar, Dropdown } from "../components";
 import Dashboard from "../components/Dashboard";
 import Login from "../components/Login";
 import Register from "../components/Register";
-import { Applicant, Police, Admin } from "../components";
+import { Applicant, Police, Admin, Footer } from "../components";
 
 export function Routes() {
   const isAuthenticated = useAuth();
@@ -128,6 +128,7 @@ export function Routes() {
             }
           />
         </Switch>
+        <Footer />
       </Router>
     </Fragment>
   );
