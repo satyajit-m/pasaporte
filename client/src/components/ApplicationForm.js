@@ -11,6 +11,7 @@ function ApplicationForm() {
     fatherName: "",
     motherName: "",
     address: "",
+    postOffice: "",
     district: "",
     state: "",
     pinCode: "",
@@ -24,6 +25,7 @@ function ApplicationForm() {
     fatherName,
     motherName,
     address,
+    postOffice,
     district,
     state,
     pinCode,
@@ -45,6 +47,7 @@ function ApplicationForm() {
         fatherName,
         motherName,
         address,
+        postOffice,
         district,
         state,
         pinCode,
@@ -238,6 +241,26 @@ function ApplicationForm() {
               placeholder="1234 MG Road"
               required
               value={address}
+              onChange={(e) => onChange(e)}
+            />
+          </div>
+        </div>
+        <div className="-mx-3 md:flex mb-2">
+          <div class="md:w-full px-3">
+            <label
+              class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+              for="address"
+            >
+              Post Office
+            </label>
+            <input
+              class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3"
+              name="address"
+              type="text"
+              required
+              placeholder="1234 MG Road"
+              required
+              value={postOffice}
               onChange={(e) => onChange(e)}
             />
           </div>
